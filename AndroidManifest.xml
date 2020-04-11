@@ -1,0 +1,636 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.endo.intellih">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+    <permission
+        android:name="com.endo.intellih.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.intellih.mobile.permission.C2D_MESSAGE" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="com.example.googlemaps.permission.MAPS_RECEIVE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> -->
+    <uses-permission android:name="android.permission.ACCESS_GPS" />
+    <uses-permission android:name="android.permisson.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" /> <!-- Need ACCESS_COARSE_LOCATION or ACCESS_FINE_LOCATION permission in Android API 23+ -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- Need RECORD_AUDIO and MODIFY_AUDIO_SETTINGS permission for iHealth BG1 -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+
+    <uses-feature android:name="android.hardware.bluetooth" />
+
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.BLUETOOTH_PRIVILEGED" /> <!-- FOR Storage -->
+    <!-- FOR Camera -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" /> <!-- Don't require camera, as this requires a rear camera. This allows it to work on the Nexus 7 -->
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.front"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.flash"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.screen.landscape"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.wifi"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.touchscreen"
+        android:required="false" />
+
+    <application xmlns:tools="http://schemas.android.com/tools"
+        android:name=".application.AppController"
+        android:allowBackup="false"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
+        tools:replace="android:allowBackup">
+
+        <!--
+        <receiver
+            android:name="com.google.android.gms.gcm.GcmReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
+                <category android:name="com.intellih.mobile" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".gcm.MyGcmListenerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </service>
+        &lt;!&ndash; [END gcm_listener] &ndash;&gt;
+        &lt;!&ndash; [START instanceId_listener] &ndash;&gt;
+        <service
+            android:name=".gcm.MyInstanceIDListenerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.gms.iid.InstanceID" />
+            </intent-filter>
+        </service>
+        &lt;!&ndash; [END instanceId_listener] &ndash;&gt;
+        <service
+            android:name=".gcm.RegistrationIntentService"
+            android:exported="false" />
+        -->
+        <!-- Define your provider -->
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.myfileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_provider_paths" />
+        </provider> <!-- Firebase Notifications -->
+        <service android:name=".service.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".service.MyFirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service> <!-- ./Firebase Notifications -->
+        <activity
+            android:name=".LoginActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.DashboardActivity"
+            android:label="@string/title_activity_home"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".familymember.DashboardActivity_FM"
+            android:label="@string/title_activity_home"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".activities.GoalActivity"
+            android:label="@string/title_activity_home"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ForgotPasswordActivity"
+            android:label="@string/title_activity_forgot_password"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DietHomeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DietCustomFoodActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".DietSearchFoodActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DietFavoriteActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".DietFoodIntakeListHistoryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DietFoodIntakeDetailsDialogActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Transparent"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".GoalHomeActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".DietHomeAddWaterActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Transparent" />
+        <activity
+            android:name=".DialogActivity"
+            android:label="@string/title_activity_dialog"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent" />
+        <activity
+            android:name=".SelfMeasurementActivity"
+            android:label="@string/title_activity_self_measurement"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".SelfMeasurementBloodGlucoseUpdateActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Transparent"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".SelfMeasurementBloodPressureUpdateActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Transparent"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".SelfMeasurementTweetUpdateActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Transparent"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".SelfMeasurementWeightUpdateActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Transparent"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".ViewListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".workout.WorkoutHomeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".workout.WorkoutHistoryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".workout.WorkoutAddExerciseActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".workout.Workout_Line_Chart_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".workout.Workout_Line_Chart_UserActivity_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".medicine.MedicineHomeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".medicine.MedicineAddMedicineActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".medicine.MedicineEditMedicineActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".medicine.MedicineRenewMedicineActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".medicine.MedicineComplianceChartActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".medicine.MedicineCompliancePRNChartActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".medicine.MedicineComplianceReportActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".medicine.MedicineListMedicineActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Settings.Setting_Home_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Settings.Setting_Personal_Activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Settings.Setting_Health_Profile_Activity"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".Settings.Setting_App_Timeout_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Settings.Setting_App_Reminder_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Settings.Setting_Unit_Pref_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Settings.Setting_About_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Fragments.dietnewfoodentry.DietCustomFoodList"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Settings.Setting_Location_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Settings.Setting_Location_Activity_List"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Settings.Setting_Location_Activity_Setting"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Settings.Setting_Reset_Password_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Main_Personal_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Main_Health_Profile_Activity"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".reports.Report_Glucose_Impact_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".reports.Report_Factor_Impact_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".selfmeasurement.SM_Weight_Graph_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".selfmeasurement.SM_Blood_Pressure_Graph_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".diet.Diet_Line_Chart_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".selfmeasurement.SM_Lifestyle_Graph_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Fragments.dietnewfoodentry.FavFoodDetails"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.Reports_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.CDM_Selection_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.QuickEntry_Selection_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.QuickEntry_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.QuickEntry_Edit_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.Questionnaire_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".reports.SM_Factor_Graph_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".reports.SM_Factor_Graph_Trend_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".reports.SM_Factor_Graph_Trend_List_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".reports.MWT_Graph_Trend_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".reports.SM_Factor_Graph_CoRelate_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".reports.SM_Factor_Graph_CoRelate_6MWT_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".reports.Questionnaire_Chart"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".reports.ComboLineColumnChartActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.CDM_Selection_Activity_Setting"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.HealthTweetActivity"
+            android:screenOrientation="portrait" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id" />
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyBZm_RfHX6D_5rOjeJ9zZZFNPO-HR4BhVk" />
+
+        <activity
+            android:name=".NotificationDetails"
+            android:label="@string/title_activity_notification_details"
+            android:parentActivityName=".common.BaseActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.endo.intellih.common.BaseActivity" />
+        </activity>
+        <activity
+            android:name=".ScoreCardActivity"
+            android:label="@string/title_activity_score_card"
+            android:parentActivityName=".common.BaseActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.endo.intellih.common.BaseActivity" />
+        </activity>
+        <!--
+ ATTENTION: This was auto-generated to add Google Play services to your project for
+     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
+        -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="firebase_crashlytics_collection_enabled"
+            android:value="false" />
+
+        <activity
+            android:name=".activities.VitalsActivity"
+            android:label="@string/title_activity_vitals"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activities.VitalListActivity"
+            android:label="@string/title_activity_vitals"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.UserActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activities.SixMinWalkHistory"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".workout.PDF_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".workout.PDF_WebView_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.VitalUpdateActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".opentalk.OpenTalkHomeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".opentalk.opentalkvideochat.OpenTalkVideoChat"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".opentalk.opentalkvideochat.textchat.signaling.TextChatOpenTalk"
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".opentalk.opentalkvideochat.OpenTalkVideoMain" />
+        <activity android:name=".opentalk.opentalkvideochat.OpenTalkVideoMultiParty"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity
+            android:name=".careteam.CareTeamActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".opentalk.eventCalendar.BasicActivityDecorated"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".careteam.TextChatCareTeam"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".mycamera.CameraClass"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".careplan.CarePlanActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name="sdk.MainActivity"
+            android:label="@string/title_activity_abi"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name="sdk.ABI"
+            android:label="@string/title_activity_abi"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name="sdk.AMActivity"
+            android:label="AM"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name="sdk.BG1"
+            android:label="@string/title_activity_bg1"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name="sdk.BG5"
+            android:label="@string/title_activity_bg5"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name="sdk.BP3L"
+            android:label="@string/title_activity_bp3_l"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name="sdk.BP3M"
+            android:label="@string/title_activity_bp3_m"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name="sdk.BP5"
+            android:label="@string/title_activity_bp5"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name="sdk.BP7"
+            android:label="@string/title_activity_bp7"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name="sdk.BP7S"
+            android:label="@string/title_activity_bp7_s"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name="sdk.BP550BT"
+            android:label="@string/title_activity_bp550_bt"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name="sdk.HS3"
+            android:label="@string/title_activity_hs3"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name="sdk.HS5BT"
+            android:label="@string/title_activity_hs5_bt"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name="sdk.HS5wifi"
+            android:label="@string/title_activity_hs5_wifi"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name="sdk.HS6"
+            android:label="@string/title_activity_hs6"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name="sdk.BTM"
+            android:label="@string/title_activity_btm"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name="sdk.KD926"
+            android:label="@string/title_activity_kd926"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name="sdk.TestActivity" />
+        <activity
+            android:name="sdk.KD723"
+            android:label="@string/title_activity_kd723"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name="sdk.ContinuaBP"
+            android:label="ContinuaBP"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name="sdk.PressureTestActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name="sdk.BPM1" />
+        <activity
+            android:name="sdk.HSActivity"
+            android:label="@string/title_activity_hs4"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name="sdk.TS28B"
+            android:label="TS28B"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".connectapp.devicegraph.FullscreenActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" /> <!-- dpp activity -->
+        <activity
+            android:name=".dpp.DashBoardDPP"
+            android:label="@string/title_activity_home"
+            android:screenOrientation="portrait" /> <!-- dpp activity end -->
+        <activity android:name=".dpp.vitals.VitalsActivityDpp" />
+        <activity android:name=".dpp.vitals.StaticVitalsActivityDpp" />
+        <activity android:name=".dpp.activity.UserActivityDpp" />
+        <activity android:name=".dpp.vitals.StaticVitalsListActivity" />
+        <activity android:name=".dpp.vitals.vitalchart.Static_SM_Factor_Graph_Trend_List_Activity" />
+        <activity
+            android:name=".dpp.vitals.wireless.WirelessGetWeight"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".qrcodescanner.ScanActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name="sdk.mainscreen.MainDeviceList"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".database.PendingUploadVital"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".resetpassword.VerifyEmail"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".vitalwirless.VitalActivityWirless"
+            android:label="@string/title_activity_vitals"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".vitalwirless.VitalGluoseFragmentWirless" />
+        <activity
+            android:name=".Settings.SetUpMyDevices"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".vitalwirless.VitalGlucoseAdapterWirless" />
+        <activity
+            android:name=".careplan.NewCarePlan"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Settings.about.AboutDetails"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".organization.OrganizationCode"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".forgottpassword.ForgottPassword"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Settings.about.pdf.PDFViewActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".activities.questionnaire.New_Questionnaire_Activity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".activities.questionnaire.TrendQuestionResponse"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".careteam.AddMultipleFamilyMember"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".familymember.CareTeam_FM"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+        <activity android:name=".acceptance.Acceptance"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+    </application>
+
+</manifest>
